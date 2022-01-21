@@ -5,6 +5,33 @@ import sys
 import base64
 import json
 
+from enum import IntEnum
+
+
+class Stat(IntEnum):
+    STRENGTH = 0
+    INTELLIGENCE = 1
+    DEXTERITY = 2
+    VITALITY = 3
+    #HEALTH = 5
+    HEALTH_REGEN = 6
+    #MANA = 6
+    MANA_REGEN = 7
+    SPEED = 8
+    PHYSICAL_DMG = 9
+    MAGICAL_DMG = 10
+    CRITICAL = 12
+    ATTACK_SPEED = 11 # max 330
+    ARMOR = 14
+    MAGICAL_RES = 15
+    DODGE = 19 # max 40
+    GOLD_DISCOVERY = 20
+    MAGICAL_DISCOVERY = 21
+    LIFE_LEACH = 22
+    MANA_HIT = 23    
+    THORNS = 24    
+    BLOCK = 25 # max 60
+    
 
 class Char:
     def __init__(self, char: dict):
@@ -28,24 +55,8 @@ class Char:
     def set_keys(self, v: int):
         self.c['lk'] = v
 
-    def set_strength(self, v: float):
-        self.c['ps'][0] = v
-    
-    def set_intelligence(self, v: float):
-        self.c['ps'][1] = v
-    
-    def set_dexterity(self, v: float):
-        self.c['ps'][2] = v
-    
-    def set_vitality(self, v: float):
-        self.c['ps'][3] = v
-    
-    def set_speed(self, v: float):
-        """default is 30"""
-        self.c['ps'][8] = v
-
-    def set_critical(self, v: float):
-        self.c['ps'][12] = v
+    def set_stat(self, stat: Stat, v: int):
+        self.c['ps'][stat] = float(v)
     
     def set_spell_points(self, v: int):
         self.c['ap'] = v
@@ -89,18 +100,22 @@ def main(args):
         print('Usage: anima.py <name.char>')
         return
     
-    # semi god mode
+    # god mode
     c = load_file(args[0])
-    c.set_gold(9_999_999_999)
-    c.set_oboli(9_999_999_999)
-    c.set_astra(9_999_999_999)
-    c.set_strength(9_999_999.0)
-    c.set_intelligence(9_999_999.0)
-    c.set_dexterity(9_999_999.0)
-    c.set_vitality(9_999_999.0)
-    c.set_speed(75)
-    c.set_critical(100)
-    c.set_all_sorts(9999)
+    c.set_gold(10_000_000_000)
+    c.set_oboli(10_000_000_000)
+    c.set_astra(10_000_000_000)
+    c.set_stat(Stat.STRENGTH, 1_000_000_000)
+    c.set_stat(Stat.INTELLIGENCE, 1_000_000_000)
+    c.set_stat(Stat.DEXTERITY, 1_000_000_000)
+    c.set_stat(Stat.VITALITY, 1_000_000_000)
+    c.set_stat(Stat.THORNS, 1_000_000_000)
+    c.set_stat(Stat.BLOCK, 60)
+    c.set_stat(Stat.DODGE, 40)
+    c.set_stat(Stat.SPEED, 80)
+    c.set_stat(Stat.CRITICAL, 100)
+    c.set_stat(Stat.ATTACK_SPEED, 10_000)
+    c.set_all_sorts(10_000)
     save_file(c, args[0])
 
 if __name__ == '__main__':
